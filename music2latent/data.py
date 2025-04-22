@@ -59,11 +59,13 @@ class TestAudioDataset(Dataset):
         return wv
     
 
-def find_files_with_extensions(path, extensions=['.wav', '.flac']):
+def find_files_with_extensions(path, extensions=['.wav', '.flac'], filter_str='_Very Noisy_'):
     found_files = []
     # Recursively traverse the directory
     for foldername, subfolders, filenames in tqdm(os.walk(path)):
         for filename in filenames:
+            if filter_str is not None and filter_str in filename:
+                continue
             # Check if the file has an extension from the specified list
             if any(filename.lower().endswith(ext.lower()) for ext in extensions):
                 # Build the full path to the file
