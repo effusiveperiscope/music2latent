@@ -51,7 +51,8 @@ class Trainer:
         # INITIALIZE CHECKPOINT FOLDER
         if misc.get_rank()==0:
             if self.save_path is None:
-                self.save_path = f'{hparams.checkpoint_path}/{str(datetime.datetime.now())}'
+                current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                self.save_path = os.path.join(hparams.checkpoint_path, current_time)
                 os.makedirs(self.save_path, exist_ok=True)
                 os.makedirs(os.path.join(self.save_path, 'code'), exist_ok=True)
                 for file in glob.glob(os.path.dirname(__file__) + '/*.py'):
@@ -362,3 +363,6 @@ def main_fad():
 def main_save_clean():
     trainer = Trainer()
     trainer.save_checkpoint_clean()
+
+if __name__ == '__main__':
+    main()
