@@ -2,7 +2,7 @@ numpy
 soundfile
 huggingface_hub
 torch>=2.5.0
-laion-clap
+git+https://github.com/effusiveperiscope/CLAP
 librosa
 torchaudio
 scipy
