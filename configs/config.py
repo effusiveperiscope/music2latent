@@ -1,17 +1,19 @@
 # MAIN PARAMETERS
-batch_size = 8                                                             # batch size
+batch_size = 4                                                             # batch size
 lr = 0.0001                                                                 # learning rate
 total_iters = 800000                                                        # total iterations
-iters_per_epoch = 10000                                                     # number of iterations approximately in every epoch
+iters_per_epoch = 10 # 10000                                                     # number of iterations approximately in every epoch
 compile_model = False                                                        # compile the model for faster training (will require ~10 minutes of compilation time only on first run)
 num_workers = 16                                                            # number of dataloader workers
 multi_gpu = False                                                           # use DistributedDataParallel multi-gpu training, to be used with torchrun
 
 data_paths = [
-    r'D:\MEGASyncDownloads\Master file 2\Songs', 
-    r'D:\MLP_Samples\AIData\Master file\Sliced Dialogue',
-    r'D:\DataAugmentation\VCTK-Corpus-0.92\wav48_silence_trimmed',
-    r'D:\DataAugmentation\TITAN-Medium-Dataset']       # list of paths of training datasets (use a single-element list for a single dataset). Audio files will be recursively searched in these paths and in their sub-paths
+    r'D:\DataAugmentation\MyTest'
+   # r'D:\MEGASyncDownloads\Master file 2\Songs', 
+   # r'D:\MLP_Samples\AIData\Master file\Sliced Dialogue',
+   # r'D:\DataAugmentation\VCTK-Corpus-0.92\wav48_silence_trimmed',
+   # r'D:\DataAugmentation\TITAN-Medium-Dataset'
+    ]       # list of paths of training datasets (use a single-element list for a single dataset). Audio files will be recursively searched in these paths and in their sub-paths
 data_fractions = None                                                       # list of sampling weights of each dataset (if None, equal sampling weights)
 data_path_test = r'D:\DataAugmentation\MyTest'                             # path of samples used for FAD testing (e.g. musiccaps)
 data_extensions = ['.wav', '.flac']                                         # list of extensions of audio files to search for in the given paths
@@ -30,7 +32,7 @@ lr_decay = 'cosine'                                                         # le
 start_decay_iteration = 0                                                   # start decaying learning rate from this iteration
 final_lr = 0.000001                                                         # if exponential_lr_decay=True, this is the learning rate after total_iters
 warmup_steps = iters_per_epoch                                              # number of warmup steps of optimizer
-accumulate_gradients = 1                                                    # will accumulate the gradients from this number of batches befire updating
+accumulate_gradients = 2                                                    # will accumulate the gradients from this number of batches befire updating
 checkpoint_path = 'checkpoints'                                             # path where to save config and checkpoints
 torch_compile_cache_dir = 'tmp/torch_compile'                               # path where to save compiled kernels
 mixed_precision = True                                                      # use mixed precision (float16)
@@ -72,7 +74,7 @@ inference_diffusion_steps = 1                                               # ho
 
 fad_models = ['vggish', 'clap']                                             # list of FAD models to use
 fad_workers = 16                                                            # number of workers for FAD evaluation
-fad_background_embeddings = [f'fad_stats/{data_path_test.replace("/", "")}_{fm}.npy' for fm in fad_models]               # name of fad embeddings file. If does not exist, it will be created on the first run
+fad_background_embeddings = ['fad_stats/'+data_path_test.replace("D:\\", "")+f'_{fm}.npy' for fm in fad_models]               # name of fad embeddings file. If does not exist, it will be created on the first run
 
 
 # MODEL
