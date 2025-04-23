@@ -2,7 +2,7 @@
 batch_size = 4                                                             # batch size
 lr = 0.0001                                                                 # learning rate
 total_iters = 800000                                                        # total iterations
-iters_per_epoch = 10 # 10000                                                     # number of iterations approximately in every epoch
+iters_per_epoch = 10000                                                     # number of iterations approximately in every epoch
 compile_model = False                                                        # compile the model for faster training (will require ~10 minutes of compilation time only on first run)
 num_workers = 16                                                            # number of dataloader workers
 multi_gpu = False                                                           # use DistributedDataParallel multi-gpu training, to be used with torchrun
