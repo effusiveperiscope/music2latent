@@ -1,5 +1,5 @@
 # MAIN PARAMETERS
-batch_size = 4                                                             # batch size
+batch_size = 2                                                             # batch size
 lr = 0.0001                                                                 # learning rate
 total_iters = 800000                                                        # total iterations
 iters_per_epoch = 10000                                                     # number of iterations approximately in every epoch
@@ -8,11 +8,11 @@ num_workers = 16                                                            # nu
 multi_gpu = False                                                           # use DistributedDataParallel multi-gpu training, to be used with torchrun
 
 data_paths = [
-    r'D:\DataAugmentation\MyTest'
-   # r'D:\MEGASyncDownloads\Master file 2\Songs', 
-   # r'D:\MLP_Samples\AIData\Master file\Sliced Dialogue',
-   # r'D:\DataAugmentation\VCTK-Corpus-0.92\wav48_silence_trimmed',
-   # r'D:\DataAugmentation\TITAN-Medium-Dataset'
+    # r'D:\DataAugmentation\MyTest'
+    r'D:\MEGASyncDownloads\Master file 2\Songs', 
+    r'D:\MLP_Samples\AIData\Master file\Sliced Dialogue',
+    r'D:\DataAugmentation\VCTK-Corpus-0.92\wav48_silence_trimmed',
+    r'D:\DataAugmentation\TITAN-Medium-Dataset'
     ]       # list of paths of training datasets (use a single-element list for a single dataset). Audio files will be recursively searched in these paths and in their sub-paths
 data_fractions = None                                                       # list of sampling weights of each dataset (if None, equal sampling weights)
 data_path_test = r'D:\DataAugmentation\MyTest'                             # path of samples used for FAD testing (e.g. musiccaps)
@@ -32,16 +32,16 @@ lr_decay = 'cosine'                                                         # le
 start_decay_iteration = 0                                                   # start decaying learning rate from this iteration
 final_lr = 0.000001                                                         # if exponential_lr_decay=True, this is the learning rate after total_iters
 warmup_steps = iters_per_epoch                                              # number of warmup steps of optimizer
-accumulate_gradients = 2                                                    # will accumulate the gradients from this number of batches befire updating
+accumulate_gradients = 4                                                    # will accumulate the gradients from this number of batches befire updating
 checkpoint_path = 'checkpoints'                                             # path where to save config and checkpoints
 torch_compile_cache_dir = 'tmp/torch_compile'                               # path where to save compiled kernels
 mixed_precision = True                                                      # use mixed precision (float16)
 seed = 42                                                                   # seed for Pytorch and Numpy
 
-load_path = None                                                            # load checkpoint from this path 
-load_iter = True                                                            # if False, reset the scheduler and start from iteration 0
-load_ema = True                                                             # if False, do not load the EMA weights from checkpoint
-load_optimizer = True                                                       # if False, do not load the optimizer parameters from checkpoint (helps in case of resuming collapsed run)
+load_path = "checkpoints/base1.pt"                                                            # load checkpoint from this path 
+load_iter = False                                                            # if False, reset the scheduler and start from iteration 0
+load_ema = False                                                             # if False, do not load the EMA weights from checkpoint
+load_optimizer = False                                                       # if False, do not load the optimizer parameters from checkpoint (helps in case of resuming collapsed run)
 optimizer_beta1 = 0.9
 optimizer_beta2 = 0.999
 
