@@ -3,6 +3,7 @@ soundfile
 huggingface_hub
 torch>=2.5.0
 git+https://github.com/effusiveperiscope/CLAP
+git+https://github.com/effusiveperiscope/auraloss
 librosa
 torchaudio
 scipy
