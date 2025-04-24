@@ -1,6 +1,6 @@
 # MAIN PARAMETERS
 batch_size = 2                                                             # batch size
-lr = 1e-4                                                                 # learning rate
+lr = 1e-5                                                                 # learning rate
 total_iters = 800000                                                        # total iterations
 iters_per_epoch = 10000                                                     # number of iterations approximately in every epoch
 compile_model = False                                                        # compile the model for faster training (will require ~10 minutes of compilation time only on first run)
@@ -38,7 +38,7 @@ torch_compile_cache_dir = 'tmp/torch_compile'                               # pa
 mixed_precision = True                                                      # use mixed precision (float16)
 seed = 42                                                                   # seed for Pytorch and Numpy
 
-load_path = "checkpoints/base1.pt"                                                            # load checkpoint from this path 
+load_path = "checkpoints/base2.pt"                                                            # load checkpoint from this path 
 load_iter = False                                                            # if False, reset the scheduler and start from iteration 0
 load_ema = False                                                             # if False, do not load the EMA weights from checkpoint
 load_optimizer = False                                                       # if False, do not load the optimizer parameters from checkpoint (helps in case of resuming collapsed run)
