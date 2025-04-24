@@ -84,7 +84,7 @@ class Trainer:
 
             x = realimag2wv(fdata, hparams.hop)
             x_plus_one = realimag2wv(fdata_plus_one, hparams.hop)
-            mrstft_loss = mrstft(x_plus_one.unsqueeze(1), x.unsqueeze(1))
+            mrstft_loss = mrstft(x_plus_one.unsqueeze(1), x.unsqueeze(1), weights=loss_weight) 
 
         return mrstft_loss
 
