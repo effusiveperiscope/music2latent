@@ -131,7 +131,6 @@ class AudioDataset(Dataset):
             wv = wv[:,:2]
             wv = wv.permute(1,0)
 
-            # if not stereo:
             wv = wv[torch.randint(wv.shape[0], size=(1,)).item(),:]
 
             rms = torch.sqrt(torch.mean(wv**2))
