@@ -17,6 +17,7 @@ from .utils import *
 from .models import *
 from .data import *
 from .audio import *
+import auraloss
 
 if hparams.torch_compile_cache_dir is not None:
     os.environ["TORCHINDUCTOR_CACHE_DIR"] = hparams.torch_compile_cache_dir
@@ -26,6 +27,14 @@ torch.backends.cudnn.benchmark = True
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.distributed import destroy_process_group
 
+mrstft = auraloss.freq.MultiResolutionSTFTLoss(
+    fft_sizes=[512, 1024, 2048],
+    hop_sizes=[128, 256, 512],
+    win_lengths=[512, 1024, 2048],
+    scale=None, # linear ?
+    n_bins=128,
+    sample_rate=hparams.sample_rate,
+)
 
 class Trainer:
     def __init__(self):
@@ -71,8 +80,13 @@ class Trainer:
                 fdata, fdata_plus_one = self.gen(data_encoder, noisy_samples, noisy_samples_plus_one, sigmas_step, sigmas)
             
             loss_weight = get_loss_weight(sigmas, sigmas_step)
-            loss = huber(fdata,fdata_plus_one,loss_weight)
-        return loss
+            huber_loss = huber(fdata,fdata_plus_one,loss_weight)
+
+            x = realimag2wv(fdata, hparams.hop)
+            x_plus_one = realimag2wv(fdata_plus_one, hparams.hop)
+            mrstft_loss = mrstft(x_plus_one.unsqueeze(1), x.unsqueeze(1))
+
+        return mrstft_loss
 
 
     def train_it(self, wv):
