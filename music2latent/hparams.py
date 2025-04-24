@@ -28,6 +28,7 @@ class HParams:
     load_optimizer: bool = True                                                     # if False, do not load the optimizer parameters from checkpoint (helps in case of resuming collapsed run)
     optimizer_beta1: float = 0.9                                                    # beta1 parameter for Adam optimizer
     optimizer_beta2: float = 0.999                                                  # beta2 parameter for Adam optimizer
+    clip_grad_norm: float = 2000
 
     # EXPONENTIAL MOVING AVERAGE
     enable_ema: bool = True                                                         # track exponential moving averages for better inference model

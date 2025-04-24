@@ -17,23 +17,27 @@ from .utils import *
 from .models import *
 from .data import *
 from .audio import *
-import auraloss
+from .my_auraloss import MultiResolutionSTFTLoss
+import music2latent.pdb_interrupt
 
 if hparams.torch_compile_cache_dir is not None:
     os.environ["TORCHINDUCTOR_CACHE_DIR"] = hparams.torch_compile_cache_dir
 
 torch.backends.cudnn.benchmark = True
 
+from torch.nn.utils import clip_grad_norm_
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.distributed import destroy_process_group
 
-mrstft = auraloss.freq.MultiResolutionSTFTLoss(
+mrstft = MultiResolutionSTFTLoss(
     fft_sizes=[512, 1024, 2048],
     hop_sizes=[128, 256, 512],
     win_lengths=[512, 1024, 2048],
     scale=None, # linear ?
     n_bins=128,
     sample_rate=hparams.sample_rate,
+    w_log_mag=5e-3,
+    w_lin_mag=3e-3
 )
 
 class Trainer:
@@ -80,7 +84,7 @@ class Trainer:
                 fdata, fdata_plus_one = self.gen(data_encoder, noisy_samples, noisy_samples_plus_one, sigmas_step, sigmas)
             
             loss_weight = get_loss_weight(sigmas, sigmas_step)
-            huber_loss = huber(fdata,fdata_plus_one,loss_weight)
+            #huber_loss = huber(fdata,fdata_plus_one,loss_weight)
 
             x = realimag2wv(fdata, hparams.hop)
             x_plus_one = realimag2wv(fdata_plus_one, hparams.hop)
@@ -118,7 +122,11 @@ class Trainer:
         self.scaler.scale(loss.float()).backward()
         loss = loss.detach().cpu().item()
 
-        grad_norm = get_grad_norm(self.gen.parameters())
+        if hparams.clip_grad_norm is not None:
+            grad_norm = clip_grad_norm_(self.gen.parameters(), max_norm=hparams.clip_grad_norm)
+        else:
+            grad_norm = get_grad_norm(self.gen.parameters())
+
         if ((self.it+1) % hparams.accumulate_gradients==0) or (self.it+1==len(self.dl)):
             self.scaler.step(self.optimizer)
             self.scaler.update()

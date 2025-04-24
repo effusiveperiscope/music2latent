@@ -1,6 +1,6 @@
 # MAIN PARAMETERS
 batch_size = 2                                                             # batch size
-lr = 0.0001                                                                 # learning rate
+lr = 1e-4                                                                 # learning rate
 total_iters = 800000                                                        # total iterations
 iters_per_epoch = 10000                                                     # number of iterations approximately in every epoch
 compile_model = False                                                        # compile the model for faster training (will require ~10 minutes of compilation time only on first run)
@@ -44,6 +44,7 @@ load_ema = False                                                             # i
 load_optimizer = False                                                       # if False, do not load the optimizer parameters from checkpoint (helps in case of resuming collapsed run)
 optimizer_beta1 = 0.9
 optimizer_beta2 = 0.999
+clip_grad_norm = 2000
 
 
 # EXPONENTIAL MOVING AVERAGE
