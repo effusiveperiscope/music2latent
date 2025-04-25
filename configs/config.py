@@ -38,13 +38,14 @@ torch_compile_cache_dir = 'tmp/torch_compile'                               # pa
 mixed_precision = True                                                      # use mixed precision (float16)
 seed = 42                                                                   # seed for Pytorch and Numpy
 
-load_path = "checkpoints/base2.pt"                                                            # load checkpoint from this path 
+load_path = "checkpoints/base3.pt"                                                            # load checkpoint from this path 
 load_iter = False                                                            # if False, reset the scheduler and start from iteration 0
 load_ema = False                                                             # if False, do not load the EMA weights from checkpoint
 load_optimizer = False                                                       # if False, do not load the optimizer parameters from checkpoint (helps in case of resuming collapsed run)
 optimizer_beta1 = 0.9
 optimizer_beta2 = 0.999
 clip_grad_norm = 2000
+huber_weight = 0.1
 
 
 # EXPONENTIAL MOVING AVERAGE

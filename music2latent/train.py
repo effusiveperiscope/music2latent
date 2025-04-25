@@ -84,13 +84,13 @@ class Trainer:
                 fdata, fdata_plus_one = self.gen(data_encoder, noisy_samples, noisy_samples_plus_one, sigmas_step, sigmas)
             
             loss_weight = get_loss_weight(sigmas, sigmas_step)
-            #huber_loss = huber(fdata,fdata_plus_one,loss_weight)
+            huber_loss = huber(fdata,fdata_plus_one,loss_weight) * hparams.huber_weight
 
             x = realimag2wv(fdata, hparams.hop)
             x_plus_one = realimag2wv(fdata_plus_one, hparams.hop)
             mrstft_loss = mrstft(x_plus_one.unsqueeze(1), x.unsqueeze(1), weights=loss_weight) 
 
-        return mrstft_loss
+        return mrstft_loss + huber_loss
 
 
     def train_it(self, wv):
